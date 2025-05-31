@@ -39,7 +39,7 @@ public class TodoController {
 
     @GetMapping("/search")
 
-    public Items updateItem(@RequestParam String title){
+    public Items searcheItem(@RequestParam String title){
 
       return   serviceImp.searchItem(title);
     }

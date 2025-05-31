@@ -58,7 +58,7 @@ public class ServiceImp implements com.example.demo.service.Service {
             item.setUserId(items.getUserId());
             repository.save(item);
         } else {
-            throw new RuntimeException("Item not found with id: " + items.getId());
+            throw new NotFoundException("Item not found with id: " + items.getId());
         }
 
     }
@@ -71,7 +71,7 @@ public class ServiceImp implements com.example.demo.service.Service {
             item = existingItem.get();  // extract item
 
         } else {
-            throw new NotFoundException("Item not found with id: " + title);
+            throw new NotFoundException("Item not found with title: " + title);
         }
         return item;
 
