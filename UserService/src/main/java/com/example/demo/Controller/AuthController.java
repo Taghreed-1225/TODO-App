@@ -5,6 +5,9 @@ import com.example.demo.Service.AuthService;
 import com.example.demo.model.request.AuthenticationResponse;
 import com.example.demo.model.request.LoginRequest;
 import com.example.demo.model.request.RegisterRequest;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,13 +25,23 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-
+    @Operation(summary = "Login with email and password ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200" ,description = "OK,token generated it last for an hour ")
+            ,@ApiResponse(responseCode = "404",description = "Not found , no user with email entered")
+    })
     @PostMapping(value = "/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest loginRequest )  {
         System.out.println("login controller");
        return ResponseEntity.ok(authService.login(loginRequest));
     }
 
+
+    @Operation(summary = "Add new user ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201" ,description = "CREATED, and otp send to user email ")
+            ,@ApiResponse(responseCode = "409",description = "CONFLICT , user email already exist")
+    })
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest registerRequest)
     {

@@ -3,6 +3,9 @@ package com.example.demo.Controller;
 
 import com.example.demo.Service.UserService;
 import com.example.demo.entity.User;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,7 +46,13 @@ public class Controller {
 
         return   userService.searchUser(email);
     }
+    @Operation(summary = "Forget password send OTP ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200" ,description = "OK,Look at your email ")
+            ,@ApiResponse(responseCode = "404",description = "NOT_FOUND, No users found with this email in token")
+            ,@ApiResponse(responseCode = "403",description = "FORBIDDEN, CHECK YOUR TOKEN")
 
+    })
 
     @PostMapping("/forgetPassword")
     public String forgetPassword(@RequestHeader String Authorization)
@@ -51,6 +60,13 @@ public class Controller {
         return userService.forgetPassword(Authorization);
 
     }
+    @Operation(summary = "Change password via OTP send ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200" ,description = "OK,Password changed ")
+            ,@ApiResponse(responseCode = "400",description = "BAD_REQUEST, CHECK YOUR OTP")
+            ,@ApiResponse(responseCode = "403",description = "FORBIDDEN, CHECK YOUR TOKEN")
+            ,@ApiResponse(responseCode = "404",description = "NOT_FOUND, No users found with this email in token")
+    })
 
     @PutMapping("/changePassword")
     public String changePassword(@RequestHeader String Authorization,@RequestHeader String otp ,@RequestBody User user  )
@@ -64,11 +80,26 @@ public class Controller {
         return userService.activateUser(email ,otp);
     }
 
+    @Operation(summary = "Regenerate OTP with email")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200" ,description = "OK,Look at your email ")
+            ,@ApiResponse(responseCode = "404",description = "NOT_FOUND, No users found with this email in token")
+            ,@ApiResponse(responseCode = "403",description = "FORBIDDEN, CHECK YOUR TOKEN")
+
+    })
+
     @PostMapping("/regenerateOtp")
     public String regenerateOtp(@RequestHeader String email )
     {
         return userService.regenerateOtp(email);
     }
+
+    @Operation(summary = "Delete user via id ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200" ,description = "OK, User activated enabled = true ")
+            ,@ApiResponse(responseCode = "403",description = "FORBIDDEN, CHECK YOUR TOKEN")
+            ,@ApiResponse(responseCode = "404",description = "NOT_FOUND, No user with this id")
+    })
 
     @PostMapping("/delete")
 
@@ -77,6 +108,13 @@ public class Controller {
         userService.deleteUser(user);
     }
 
+    @Operation(summary = "Check validty of token")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200" ,description = "OK,Valid")
+            ,@ApiResponse(responseCode = "403",description = "FORBIDDEN, CHECK YOUR TOKEN")
+    })
+
+    @RequestMapping("/app/auth/validation")
     @GetMapping("/validateToken")
     public String validateToken (@RequestHeader String Authorization){
 
