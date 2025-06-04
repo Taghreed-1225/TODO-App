@@ -27,18 +27,27 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Autowired
     private UserDetailsService userDetailsService;
 
+
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
+        System.out.println("doFilterInternal");
         try {
             String authHeader = request.getHeader("Authorization");
             String accessToken = null;
             String userEmail = null;
 
-            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                filterChain.doFilter(request, response); //return 403
+            String path = request.getServletPath();
+
+            if (path.startsWith("/activateUser")) {
+                filterChain.doFilter(request, response); // skip JWT filter
                 return;
             }
+            if (path.startsWith("/rest/auth/")) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+
 
 
             accessToken = authHeader.substring("Bearer ".length());

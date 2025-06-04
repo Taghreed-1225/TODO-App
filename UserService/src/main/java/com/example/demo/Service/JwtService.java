@@ -4,7 +4,9 @@ package com.example.demo.Service;
 import com.example.demo.entity.User;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +20,15 @@ public class JwtService {
 
     private final String secret_key = "mysecretkey";
 
-    private final long accessTokenValidity = 30*60*1000;  //valid till 30 minutes
+    private final long accessTokenValidity = 60*60*1000;  //valid till 30 minutes
 
     private final JwtParser jwtParser;
+
+    public String extractEmail(String token) { // (decode) JWT token then return claims
+        return parseJwtClaims(token).getSubject();// get subject==get email
+
+    }
+
 
     public JwtService()
     {
@@ -29,7 +37,7 @@ public class JwtService {
 
     public String createToken(User user , Map<String , Object> extraClaims) {
 
-
+        System.out.println("createToken");
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(user.getEmail())
@@ -91,4 +99,11 @@ public class JwtService {
     }
 
 
+    public UserDetails getCurrentUserDetails() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            return (UserDetails) authentication.getPrincipal();
+        }
+        return null;
+    }
 }

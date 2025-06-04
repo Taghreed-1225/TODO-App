@@ -37,6 +37,12 @@ public class User implements UserDetails {
 
     private boolean enabled;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Token> tokens;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Otp> otps;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -33,7 +33,10 @@ public class SecurityConfig {
 
 
     @Bean
-    public AuthenticationProvider authenticationProvider() throws Exception {
+    public AuthenticationProvider authenticationProvider() //throws Exception
+    {
+
+        System.out.println("AuthenticationProvider");
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
@@ -43,10 +46,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        System.out.println("securityFilterChain");
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/rest/auth/**").permitAll()
+                        .requestMatchers("/rest/auth/**","/activateUser","/regenerateOtp").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
@@ -59,6 +63,8 @@ public class SecurityConfig {
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
+
+        System.out.println("BCryptPasswordEncoder");
         return new BCryptPasswordEncoder();
     }
 

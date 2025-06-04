@@ -22,12 +22,12 @@ public class Controller {
 
     }
 
-    @DeleteMapping("/delete")
-
-    public void deleteItem(@RequestParam int id){
-
-     userService.deleteUser(id);
-    }
+//    @DeleteMapping("/delete")
+//
+//    public void deleteItem(@RequestParam int id){
+//
+//     userService.deleteUser(id);
+//    }
 
     @PutMapping("/update")
 
@@ -43,6 +43,48 @@ public class Controller {
 
         return   userService.searchUser(email);
     }
+
+
+    @PostMapping("/forgetPassword")
+    public String forgetPassword(@RequestHeader String Authorization)
+    {
+        return userService.forgetPassword(Authorization);
+
+    }
+
+    @PutMapping("/changePassword")
+    public String changePassword(@RequestHeader String Authorization,@RequestHeader String otp ,@RequestBody User user  )
+    {
+        return userService.changePassword(Authorization,otp,user);
+
+    }
+    @PutMapping("/activateUser")
+    public boolean activateUser(@RequestHeader String email, @RequestHeader String otp)
+    {
+        return userService.activateUser(email ,otp);
+    }
+
+    @PostMapping("/regenerateOtp")
+    public String regenerateOtp(@RequestHeader String email )
+    {
+        return userService.regenerateOtp(email);
+    }
+
+    @PostMapping("/delete")
+
+    public void deleteItem(@RequestBody User user){
+
+        userService.deleteUser(user);
+    }
+
+    @GetMapping("/validateToken")
+    public String validateToken (@RequestHeader String Authorization){
+
+      return   userService.validateToken(Authorization);
+
+    }
+
+
 
 
     @GetMapping("/hello")
