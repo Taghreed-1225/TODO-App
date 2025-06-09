@@ -5,13 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -40,44 +36,6 @@ public class Items {
 
 
 
-     //lombok
 
-
-    public int getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public ItemDetails getItemDetails() {
-        return itemDetails;
-    }
-
-    public void setItemDetails(ItemDetails itemDetailsId) {
-        this.itemDetails = itemDetailsId;
-    }
-
-    public Items(String title, int userId, ItemDetails itemDetailsId) {
-        this.title = title;
-        this.userId = userId;
-        this.itemDetails = itemDetailsId;
-    }
-    public Items() {
-
-    }
 
 }

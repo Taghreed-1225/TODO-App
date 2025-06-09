@@ -37,10 +37,10 @@ public class AuthController {
     }
 
 
-    @Operation(summary = "Add new user ")
+    @Operation(summary = "Register new user")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201" ,description = "CREATED, and otp send to user email ")
-            ,@ApiResponse(responseCode = "409",description = "CONFLICT , user email already exist")
+            @ApiResponse(responseCode = "200", description = "User registered successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input data")
     })
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest registerRequest)

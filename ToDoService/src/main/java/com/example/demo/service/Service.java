@@ -8,7 +8,7 @@ public interface Service {
 
     public Page<Items> getItems(int page , int size);
 
-    public void addItem(Items items);
+    public String addItem(Items items);
 
     public void deleteItem(int id);
 

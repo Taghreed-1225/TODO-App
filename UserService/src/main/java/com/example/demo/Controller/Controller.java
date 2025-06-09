@@ -3,13 +3,23 @@ package com.example.demo.Controller;
 
 import com.example.demo.Service.UserService;
 import com.example.demo.entity.User;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+@OpenAPIDefinition(
+        info = @Info(
+                title = "users API",
+                version = "1.0",
+                description = "Handle operations ^cruds^ on users"
+        )
+)
 
 @RestController
 public class Controller {
@@ -31,6 +41,16 @@ public class Controller {
 //
 //     userService.deleteUser(id);
 //    }
+
+
+    @Operation(summary = "Update user via id ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200" ,description = "OK, User updated  ")
+            ,@ApiResponse(responseCode = "404",description = "NOT_FOUND, No user with this id")
+            ,@ApiResponse(responseCode = "403",description = "FORBIDDEN, CHECK YOUR TOKEN")
+            ,@ApiResponse(responseCode = "409",description = "CONFLICT,  Updated email is  already exist")
+
+    })
 
     @PutMapping("/update")
 
@@ -54,6 +74,7 @@ public class Controller {
 
     })
 
+
     @PostMapping("/forgetPassword")
     public String forgetPassword(@RequestHeader String Authorization)
     {
@@ -74,11 +95,20 @@ public class Controller {
         return userService.changePassword(Authorization,otp,user);
 
     }
+
+    @Operation(summary = "Activate user via id ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200" ,description = "OK, User activated enabled = true ")
+            ,@ApiResponse(responseCode = "404",description = "NOT_FOUND, No user with this id")
+            ,@ApiResponse(responseCode = "409",description = "CONFLICT, User already active")
+            ,@ApiResponse(responseCode = "403",description = "FORBIDDEN, CHECK YOUR TOKEN")
+    })
     @PutMapping("/activateUser")
     public boolean activateUser(@RequestHeader String email, @RequestHeader String otp)
     {
         return userService.activateUser(email ,otp);
     }
+
 
     @Operation(summary = "Regenerate OTP with email")
     @ApiResponses(value = {
@@ -87,12 +117,12 @@ public class Controller {
             ,@ApiResponse(responseCode = "403",description = "FORBIDDEN, CHECK YOUR TOKEN")
 
     })
-
     @PostMapping("/regenerateOtp")
     public String regenerateOtp(@RequestHeader String email )
     {
         return userService.regenerateOtp(email);
     }
+
 
     @Operation(summary = "Delete user via id ")
     @ApiResponses(value = {
@@ -100,7 +130,6 @@ public class Controller {
             ,@ApiResponse(responseCode = "403",description = "FORBIDDEN, CHECK YOUR TOKEN")
             ,@ApiResponse(responseCode = "404",description = "NOT_FOUND, No user with this id")
     })
-
     @PostMapping("/delete")
 
     public void deleteItem(@RequestBody User user){
@@ -108,14 +137,13 @@ public class Controller {
         userService.deleteUser(user);
     }
 
+
     @Operation(summary = "Check validty of token")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200" ,description = "OK,Valid")
             ,@ApiResponse(responseCode = "403",description = "FORBIDDEN, CHECK YOUR TOKEN")
     })
-
-    @RequestMapping("/app/auth/validation")
-    @GetMapping("/validateToken")
+    @PostMapping("/validateToken")
     public String validateToken (@RequestHeader String Authorization){
 
       return   userService.validateToken(Authorization);

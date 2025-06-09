@@ -11,6 +11,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -62,9 +64,21 @@ public class UserServiceImp implements UserService{
 
     @Override
     public String validateToken(String Authorization) {
+        System.out.println("validate token function");
         String token = Authorization.replace("Bearer ", "");
-        UserDetails userDetails = jwtService.getCurrentUserDetails();
+        System.out.println(token);
+        String email = jwtService. extractEmail(token);
+        System.out.println(email);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication.getName());
+        if (authentication == null || !authentication.isAuthenticated()) {
+            System.out.println("if in userservice");
+            return "invalid token";
+        }
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        System.out.println(userDetails.getUsername());
        boolean isValid= jwtService.isTokenValid(token,userDetails);
+        System.out.println(isValid);
        return isValid ? "valid token" :"invalid token";
 
     }

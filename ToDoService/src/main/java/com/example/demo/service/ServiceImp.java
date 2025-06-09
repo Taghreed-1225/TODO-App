@@ -34,15 +34,17 @@ public class ServiceImp implements com.example.demo.service.Service {
     }
 
     @Override
-    public void addItem(Items items) {
+    public String addItem(Items items) {
         items.setItemDetails(items.getItemDetails());
-
         repository.save(items);
+        return "Item added successfully";
     }
 
     @Override
     public void deleteItem(int id) {
+        System.out.println(id);
         if (!repository.existsById(id)) {
+            System.out.println(repository.existsById(id));
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found");}
         repository.deleteById(id);
     }
