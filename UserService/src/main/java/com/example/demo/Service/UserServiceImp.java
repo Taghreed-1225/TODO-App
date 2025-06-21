@@ -201,7 +201,7 @@ public class UserServiceImp implements UserService{
              Otp otp = otpService.generateOtp(user);
              // store otp
              otpRepo.save(otp);
-             //  emailService.sendOtpMsg(user.getEmail(),"Your Verification Code", otp);
+              emailService.sendOtpMsg(user.getEmail(),"Your Verification Code", otp.getOtp());
              return "otp saved";
          }
          else {

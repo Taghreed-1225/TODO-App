@@ -14,7 +14,7 @@ public class EmailServiceImpl {
 
     public void sendOtpMsg(String email, String subject, String otp) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("taghred1225@gmail.com");
+        message.setFrom("taghreed1225@gmail.com");
         message.setTo(email);
         message.setSubject(subject);
         message.setText("your code is : "+otp);

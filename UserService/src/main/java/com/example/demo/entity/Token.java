@@ -9,7 +9,9 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Data  // equal to @Setter , @Getter , @ToString
+@Setter
+@Getter
+//@Data  // equal to @Setter , @Getter , @ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,4 +36,11 @@ public class Token {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    // Token.java
+    @Override
+    public String toString() {
+        return "Token{id=" + id + ", userId=" + (user != null ? user.getId() : null) + "}";
+    }
+
 }

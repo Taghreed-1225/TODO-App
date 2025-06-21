@@ -45,6 +45,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response); // skip JWT filter
                 return;
             }
+            if (path.startsWith("/regenerateOtp")) {
+                System.out.println("if3");
+                filterChain.doFilter(request, response); // skip JWT filter
+                return;
+            }
             if (path.startsWith("/rest/auth/")) {
                 System.out.println("if2");
                 filterChain.doFilter(request, response);

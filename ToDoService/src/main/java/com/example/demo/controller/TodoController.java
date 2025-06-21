@@ -47,14 +47,12 @@ public class TodoController {
 
     @PostMapping
     public  ResponseEntity<String>  addItem(@Valid @RequestBody Items items ,  @RequestHeader("Authorization") String token ,  BindingResult bindingResult){
-        System.out.println("add");
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>("Validation failed: " + bindingResult.getAllErrors().get(0).getDefaultMessage(),
                     HttpStatus.BAD_REQUEST);
         }
 
         if (!isTokenValid(token)) {
-            System.out.println("if in add");
             return new ResponseEntity<>("Invalid token", HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(serviceImp.addItem(items), HttpStatus.CREATED);

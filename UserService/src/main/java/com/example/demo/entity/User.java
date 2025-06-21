@@ -16,7 +16,6 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -68,4 +67,11 @@ public class User implements UserDetails {
     public boolean isCredentialsNonExpired() {
         return UserDetails.super.isCredentialsNonExpired();
     }
+
+    // User.java
+    @Override
+    public String toString() {
+        return "User{id=" + id + ", tokenCount=" + (tokens != null ? tokens.size() : 0) + "}";
+    }
+
 }
